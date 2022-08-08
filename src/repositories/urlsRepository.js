@@ -79,7 +79,7 @@ async function increaseView(shortUrl) {
         return false;
         
     } catch (error) {
-        console.log('\n\nURL REPOSITORY - Find URL ID ERROR\n\n' + error);
+        console.log('\n\nURL REPOSITORY - Increase View ERROR\n\n' + error);
         return '500';
     }
 
@@ -97,11 +97,34 @@ async function deleteUrls(id) {
         return true;
         
     } catch (error) {
-        console.log('\n\nUSER REPOSITORY - Find User URLS ERROR\n\n' + error);
+        console.log('\n\nURLS REPOSITORY - DELETE URLS ERROR\n\n' + error);
+        return '500';
+    }
+
+}
+
+async function rankingUrl() {
+
+    try {
+        const { rows } = await connection.query(`
+        SELECT users.id, users.name, COUNT(urls.url) AS "linksCount", SUM(urls."visitCount") AS "visitCount"
+            FROM users
+            LEFT JOIN urls 
+                ON urls."userId" = users.id
+            GROUP BY users.id
+            ORDER BY "visitCount"
+            LIMIT 10
+        `
+        );
+        
+        return rows;
+        
+    } catch (error) {
+        console.log('\n\nURL REPOSITORY - Ranking URLS ERROR\n\n' + error);
         return '500';
     }
 
 }
 
 
-export { findShortenUrl, saveShortenUrl, findUrlId, increaseView, deleteUrls }
+export { findShortenUrl, saveShortenUrl, findUrlId, increaseView, deleteUrls, rankingUrl }

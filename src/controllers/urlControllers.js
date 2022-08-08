@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { customRandom, random, urlAlphabet } from 'nanoid';
 
 import { deleteUrls, findShortenUrl, findUrlId, increaseView, saveShortenUrl } from '../repositories/urlsRepository.js';

@@ -1,11 +1,11 @@
 import express from 'express';
 
-//import controllers
+import ranking from '../controllers/rankControllers.js';
 
 const router = express.Router();
 
 
-router.get("/ranking" /**, controllers */);
+router.get("/ranking", ranking);
 
 
 export default router;

@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { getAllUserUrls, findUserById } from '../repositories/userRepository.js';
 
 async function allUserUrls(req, res) {
