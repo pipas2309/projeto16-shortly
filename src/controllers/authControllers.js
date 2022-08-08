@@ -4,10 +4,8 @@ import { createUser, findUser } from '../repositories/userRepository.js';
 import 'dotenv/config';
 
 
-const secretKey = process.env.JWT_SECRET;
-
-
 async function signInController(req, res) {
+    const secretKey = process.env.JWT_SECRET;
     const { email, password } = res.locals.inputData;
 
     try {
