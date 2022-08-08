@@ -10,7 +10,7 @@ async function stripData(req, res, next) {
         }
     }
 
-    res.locals.inputData = inputData;
+    res.locals.inputData = aux;
     res.locals.headers = req.headers;
 
     next();
