@@ -62,4 +62,27 @@ async function findUrlId(id) {
 
 }
 
-export { findShortenUrl, saveShortenUrl, findUrlId }
+async function increaseView(shortUrl) {
+
+    try {
+        const { rows: url } = await connection.query(`
+        UPDATE urls 
+            SET "visitCount" = "visitCount" + 1
+        WHERE "shortUrl" = $1
+        `,[shortUrl]
+        );
+        
+        if(url[0]) {
+            return url[0];
+        } 
+
+        return false;
+        
+    } catch (error) {
+        console.log('\n\nURL REPOSITORY - Find URL ID ERROR\n\n' + error);
+        return '500';
+    }
+
+}
+
+export { findShortenUrl, saveShortenUrl, findUrlId, increaseView }

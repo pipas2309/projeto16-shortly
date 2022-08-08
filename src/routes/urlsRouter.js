@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { createShortenUrl, getUrlById } from '../controllers/urlControllers.js';
+import { createShortenUrl, getUrlById, openShortUrl } from '../controllers/urlControllers.js';
 import validator from '../middlewares/schemasValidation.js';
 import stripData from '../middlewares/stripData.js'; // É REALMENTE NECESSÁRIO????
 import tokenValidator from '../middlewares/tokensValidation.js';
@@ -14,7 +14,7 @@ router.post("/urls/shorten", tokenValidator, stripData, validator('shorten'), cr
 
 router.get("/urls/:id", getUrlById);
 
-router.get("/urls/open/:shortUrl",  /**, controllers */);
+router.get("/urls/open/:shortUrl", openShortUrl);
 
 router.delete("/urls/:id", tokenValidator/**, controllers */);
 
