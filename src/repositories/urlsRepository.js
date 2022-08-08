@@ -85,4 +85,23 @@ async function increaseView(shortUrl) {
 
 }
 
-export { findShortenUrl, saveShortenUrl, findUrlId, increaseView }
+async function deleteUrls(id) {
+
+    try {
+        await connection.query(`
+        DELETE FROM urls
+            WHERE id = $1
+        `,[id]
+        );
+        
+        return true;
+        
+    } catch (error) {
+        console.log('\n\nUSER REPOSITORY - Find User URLS ERROR\n\n' + error);
+        return '500';
+    }
+
+}
+
+
+export { findShortenUrl, saveShortenUrl, findUrlId, increaseView, deleteUrls }

@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { customRandom, random, urlAlphabet } from 'nanoid';
 
-import { findShortenUrl, findUrlId, increaseView, saveShortenUrl } from '../repositories/urlsRepository.js';
+import { deleteUrls, findShortenUrl, findUrlId, increaseView, saveShortenUrl } from '../repositories/urlsRepository.js';
+import { findUserUrls } from '../repositories/userRepository.js';
 
 async function createShortenUrl(req, res) {
     const userId = res.locals.userId;
@@ -92,4 +93,46 @@ async function openShortUrl(req, res) {
 
 }
 
-export { createShortenUrl, getUrlById, openShortUrl }
+async function deleteShortUrl(req, res) {
+    const userId = res.locals.userId;
+
+    const { id } =  req.params;
+
+    const urlId = parseInt(id);
+
+    if(isNaN(urlId)) {
+        res.sendStatus(400);
+        return; 
+    }
+    
+    try {
+        //Check if exist url
+        const checkUrl = await findUrlId(urlId);
+
+        if(!checkUrl) {
+            res.sendStatus(404);
+            return;
+        }
+
+        //Check if User-Token is the url owner
+        const urls = await findUserUrls(userId);
+
+        const iAmTheUrlOwner = await urls.find(el => el.id === urlId);
+
+        if(iAmTheUrlOwner) {
+            await deleteUrls(urlId);
+            res.sendStatus(204);
+            return; 
+        }
+
+        return res.sendStatus(401);
+
+    } catch (error) {
+        console.log('\n\nURL CONTROLLER - Delete URL ERROR\n\n' + error);
+        res.sendStatus(500);
+        return;
+    }
+
+}
+
+export { createShortenUrl, getUrlById, openShortUrl, deleteShortUrl }
