@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { customRandom, random, urlAlphabet } from 'nanoid';
 
-import { findShortenUrl, saveShortenUrl } from '../repositories/urlsRepository.js';
+import { findShortenUrl, findUrlId, saveShortenUrl } from '../repositories/urlsRepository.js';
 
 async function createShortenUrl(req, res) {
     const userId = res.locals.userId;
@@ -40,5 +40,29 @@ async function createShortenUrl(req, res) {
  
 }
 
+async function getUrlById(req, res) {
+    const { id } = req.params;
 
-export { createShortenUrl }
+    try {
+        const url = await findUrlId(id);
+
+        if(!url) {
+            res.sendStatus(404);
+            return;
+        }
+
+        if(url === '500') {
+            return res.sendStatus(400);
+            
+        }
+    
+        res.status(200).send(url);
+    } catch (error) {
+        console.log('\n\nURL CONTROLLER - Get URL By ID ERROR\n\n' + error);
+        res.sendStatus(500);
+        return;
+    }
+
+}
+
+export { createShortenUrl, getUrlById }

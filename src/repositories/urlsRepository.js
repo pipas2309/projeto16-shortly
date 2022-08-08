@@ -16,7 +16,7 @@ async function findShortenUrl(shortenUrl) {
         return false;
         
     } catch (error) {
-        console.log('\n\nUSER REPOSITORY ERROR\n\n' + error);
+        console.log('\n\nURL REPOSITORY - Find Shorten URL ERROR\n\n' + error);
         return '500';
     }
 
@@ -34,11 +34,32 @@ async function saveShortenUrl(userId, url, shortUrl) {
         return true;
         
     } catch (error) {
-        console.log('\n\nUSER REPOSITORY ERROR\n\n' + error);
+        console.log('\n\nURL REPOSITORY - Save Shorten URL ERROR\n\n' + error);
         return '500';
     }
 
 }
 
+async function findUrlId(id) {
 
-export { findShortenUrl, saveShortenUrl }
+    try {
+        const { rows: url } = await connection.query(`
+        SELECT id, "shortUrl", url FROM urls
+            WHERE "id" = $1
+        `,[id]
+        );
+        
+        if(url[0]) {
+            return url[0];
+        } 
+
+        return false;
+        
+    } catch (error) {
+        console.log('\n\nURL REPOSITORY - Find URL ID ERROR\n\n' + error);
+        return '500';
+    }
+
+}
+
+export { findShortenUrl, saveShortenUrl, findUrlId }
