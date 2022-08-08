@@ -7,7 +7,7 @@ import stripData from '../middlewares/stripData.js';
 const router = express.Router();
 
 
-router.post("/signin", stripData, validator('signIn') /**, controllers */);
+router.post("/signin", stripData, validator('signIn'));
 
 router.post("/signup", stripData, validator('signUp') /**, controllers */);
 
