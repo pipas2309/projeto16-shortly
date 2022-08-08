@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import { findUser } from '../repositories/userRepository.js';
+import { createUser, findUser } from '../repositories/userRepository.js';
 import 'dotenv/config';
 
 
@@ -40,7 +40,25 @@ async function signInController(req, res) {
 
 
 async function signUpController(req, res) {
-    
+    const { name, email, password } = res.locals.inputData;
+
+    const encryptedPassword = bcrypt.hashSync(password, 10);
+
+    try {
+        const created = await createUser(name, email, encryptedPassword);
+
+        if(created === '500') {
+            return res.sendStatus(409);
+        }
+
+        return res.status(201).send('TOPSON');  
+
+    } catch (error) {
+        console.log('\n\nSIGN IN CONTROLLER ERROR\n\n' + error);
+        res.sendStatus(500);
+        return;
+    }
+ 
 }
 
 export { signInController, signUpController }
