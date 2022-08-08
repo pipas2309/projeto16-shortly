@@ -4,7 +4,6 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/server.js",
@@ -30,6 +29,7 @@
     "jsonwebtoken": "^8.5.1",
     "nanoid": "^4.0.0",
     "nodemon": "^2.0.19",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "string-strip-html": "^11.1.0"
   }
 }

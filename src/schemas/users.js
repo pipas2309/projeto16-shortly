@@ -12,4 +12,4 @@ const signinSchema = joi.object({
     password: joi.string().min(1).max(64).required()
 });
 
-export default { signinSchema, signupSchema } = userSchemas;
+export { signinSchema, signupSchema };
