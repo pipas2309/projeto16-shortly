@@ -83,4 +83,31 @@ async function findUserUrls(userId) {
 
 }
 
-export { findUser, createUser, findUserById, findUserUrls }
+async function getAllUserUrls(userId) {
+    try {
+        const { rows: user } = await connection.query(`
+        SELECT users.id, users.name, SUM(urls."visitCount") AS "visitCount", json_agg(
+            json_build_object(
+                'id', urls.id,
+                'shortUrl', urls."shortUrl",
+                'url', urls.url,
+                'visitCount', urls."visitCount"
+            )
+        ) AS "shortenedUrls"
+        FROM urls
+            JOIN users
+                ON users.id = urls."userId"
+            WHERE urls."userId" = $1
+            GROUP BY users.id
+        `,[userId]
+        );
+        
+        return user[0];
+        
+    } catch (error) {
+        console.log('\n\nUSER REPOSITORY - Get All User URLS ERROR\n\n' + error);
+        return '500';
+    }
+}
+
+export { findUser, createUser, findUserUrls, getAllUserUrls, findUserById }
